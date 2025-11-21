@@ -1,0 +1,122 @@
+[
+  {
+    "id": "t-j-m2",
+    "name": "八代 慎",
+    "rank": "junior",
+    "baseSalary": 200000,
+    "satisfactionImpact": 0.1,
+    "gender": "male",
+    "specialty": "定期テスト対策",
+    "personality": "研修中の見習い先生。真面目だが子供が少し苦手。"
+  },
+  {
+    "id": "t-j-f2",
+    "name": "伊吹 夏海",
+    "rank": "junior",
+    "baseSalary": 220000,
+    "satisfactionImpact": 0.8,
+    "gender": "female",
+    "specialty": "作文・面接",
+    "personality": "朗らかなムードメーカー。空気を和ませるのが得意。"
+  },
+  {
+    "id": "t-j-m1",
+    "name": "金城 航",
+    "rank": "junior",
+    "baseSalary": 240000,
+    "satisfactionImpact": 0.4,
+    "gender": "male",
+    "specialty": "高校数学サポート",
+    "personality": "勢い重視の熱血派。温度差が激しいがハマると強い。"
+  },
+  {
+    "id": "t-j-f1",
+    "name": "白鳥 ひより",
+    "rank": "junior",
+    "baseSalary": 270000,
+    "satisfactionImpact": 0.6,
+    "gender": "female",
+    "specialty": "個別英会話",
+    "personality": "正しさを心情に持つタイプ。真摯に子供に向き合う。"
+  },
+  {
+    "id": "t-m-m1",
+    "name": "南野 連",
+    "rank": "mid",
+    "baseSalary": 300000,
+    "satisfactionImpact": 1.2,
+    "gender": "male",
+    "specialty": "高校地理",
+    "personality": "ストイックな探究者。静かだが着実に質を高める。"
+  },
+  {
+    "id": "t-m-m2",
+    "name": "篠田 海斗",
+    "rank": "mid",
+    "baseSalary": 320000,
+    "satisfactionImpact": 1.6,
+    "gender": "male",
+    "specialty": "理科実験",
+    "personality": "実験大好きなワクワク職人。驚きを演出するのが得意。"
+  },
+  {
+    "id": "t-m-f2",
+    "name": "桐原 まい",
+    "rank": "mid",
+    "baseSalary": 340000,
+    "satisfactionImpact": 1.9,
+    "gender": "female",
+    "specialty": "現代文対策",
+    "personality": "前向きでポジティブ派。場を明るくするタイプ。"
+  },
+  {
+    "id": "t-m-f1",
+    "name": "高梨 柚葉",
+    "rank": "mid",
+    "baseSalary": 360000,
+    "satisfactionImpact": 2.2,
+    "gender": "female",
+    "specialty": "中学英語",
+    "personality": "お姉さん肌で包容力抜群。悩み相談も丁寧にこなす。"
+  },
+  {
+    "id": "t-s-f2",
+    "name": "朝倉 美鈴",
+    "rank": "senior",
+    "baseSalary": 390000,
+    "satisfactionImpact": 2.5,
+    "gender": "female",
+    "specialty": "国公立小論文",
+    "personality": "物腰やわらかで芯が強い。静かに鼓舞するタイプ。"
+  },
+  {
+    "id": "t-s-m1",
+    "name": "小宮 直哉",
+    "rank": "senior",
+    "baseSalary": 430000,
+    "satisfactionImpact": 2.7,
+    "gender": "male",
+    "specialty": "理系総合指導",
+    "personality": "厳格で結果主義。数字で語る頼れる指揮官タイプ。"
+  },
+  {
+    "id": "t-s-m2",
+    "name": "堂本 修也",
+    "rank": "senior",
+    "baseSalary": 480000,
+    "satisfactionImpact": 2.8,
+    "gender": "male",
+    "specialty": "高校数学ゼミ",
+    "personality": "勝負どころで燃える闘将。攻めの姿勢で引っ張る。"
+  },
+  {
+    "id": "t-s-f1",
+    "name": "北川 千尋",
+    "rank": "senior",
+    "baseSalary": 500000,
+    "satisfactionImpact": 3,
+    "gender": "female",
+    "specialty": "難関英語指導",
+    "personality": "クールなカリスマ。徹底管理で抜け漏れを許さない。"
+  }
+]

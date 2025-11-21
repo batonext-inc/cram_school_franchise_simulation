@@ -1,0 +1,62 @@
+[
+  {
+    "id": "hachioji",
+    "name": "八王子校",
+    "marketStudents": 3000,
+    "rent": 40.0,
+    "stationTraffic": 8,
+    "tuitionPerStudent": 27900,
+    "openingCost": 3900000,
+    "intakeCapacity": 360
+  },
+  {
+    "id": "chiba",
+    "name": "千葉校",
+    "marketStudents": 3000,
+    "rent": 35.5,
+    "stationTraffic": 10,
+    "tuitionPerStudent": 27000,
+    "openingCost": 4260000,
+    "intakeCapacity": 360
+  },
+  {
+    "id": "omiya",
+    "name": "大宮校",
+    "marketStudents": 5000,
+    "rent": 38.0,
+    "stationTraffic": 25,
+    "tuitionPerStudent": 27500,
+    "openingCost": 4560000,
+    "intakeCapacity": 480
+  },
+  {
+    "id": "kawasaki",
+    "name": "川崎校",
+    "marketStudents": 6000,
+    "rent": 44.0,
+    "stationTraffic": 19,
+    "tuitionPerStudent": 28600,
+    "openingCost": 5600000,
+    "intakeCapacity": 540
+  },
+  {
+    "id": "akihabara",
+    "name": "秋葉原校",
+    "marketStudents": 8000,
+    "rent": 65.5,
+    "stationTraffic": 22,
+    "tuitionPerStudent": 32700,
+    "openingCost": 7800000,
+    "intakeCapacity": 720
+  },
+  {
+    "id": "shinjuku",
+    "name": "新宿校",
+    "marketStudents": 10000,
+    "rent": 82.0,
+    "stationTraffic": 67,
+    "tuitionPerStudent": 33000,
+    "openingCost": 12000000,
+    "intakeCapacity": 900
+  }
+]

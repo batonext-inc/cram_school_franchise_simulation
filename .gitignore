@@ -1,0 +1,10 @@
+# macOS metadata
+.DS_Store
+
+# Node / frontend build outputs
+node_modules/
+dist/
+
+# Tooling artifacts
+.serena/
+
