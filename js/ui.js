@@ -537,6 +537,7 @@ export class UIController {
       label: campus.name,
       marketStudents: campus.marketStudents,
       stationTraffic: campus.stationTraffic,
+      rent: campus.rent,
       openingCost: campus.openingCost,
       intakeCapacity: campus.intakeCapacity,
       imageSrc: this.getCampusThumbnail(campus.id),
@@ -569,14 +570,18 @@ export class UIController {
           <h4>1. 校舎を選択</h4>
           <span>未開校の校舎カードから選択してください。</span>
         </div>
-        <div class="campus-card-grid" data-role="open-campus-grid"></div>
+        <div class="campus-card-grid-wrapper">
+          <div class="campus-card-grid" data-role="open-campus-grid"></div>
+        </div>
       </div>
       <div class="open-campus-step" data-step="teacher">
         <div class="open-campus-step-head">
           <h4>2. 初期の先生を決定</h4>
           <span>開校時に着任する先生を選びましょう。</span>
         </div>
-        <div class="campus-card-grid teacher-card-grid" data-role="open-teacher-grid"></div>
+        <div class="campus-card-grid-wrapper">
+          <div class="campus-card-grid teacher-card-grid" data-role="open-teacher-grid"></div>
+        </div>
         <p class="muted helper">※ 校舎を選ぶと選択できるようになります。</p>
       </div>
       <div class="modal-actions spaced">
@@ -608,15 +613,19 @@ export class UIController {
           card.classList.add("selected");
         }
 
+        const media = document.createElement("div");
+        media.className = "campus-card-media";
         const image = document.createElement("img");
         image.src = option.imageSrc;
         image.alt = `${option.label}の外観イメージ`;
+        media.appendChild(image);
 
         const content = document.createElement("div");
         content.className = "campus-card-content";
         content.innerHTML = `
           <p class="campus-name">${option.label}</p>
           <p class="campus-meta">商圏: ${option.marketStudents.toLocaleString()}人</p>
+          <p class="campus-meta">家賃: ${this.formatMonthlyRent(option.rent)}</p>
           <p class="campus-meta">駅乗降客数: ${option.stationTraffic}万人/日</p>
           <p class="campus-meta">受入上限: ${this.formatIntakeCapacity(option.intakeCapacity)}</p>
           <p class="campus-meta">初期投資: ${this.formatYen(option.openingCost)}</p>
@@ -626,10 +635,10 @@ export class UIController {
           const badge = document.createElement("span");
           badge.className = "campus-badge";
           badge.textContent = "資金不足";
-          content.appendChild(badge);
+          media.appendChild(badge);
         }
 
-        card.append(image, content);
+        card.append(media, content);
 
         card.addEventListener("click", () => {
           if (!option.affordable) {
@@ -1281,6 +1290,8 @@ export class UIController {
       this.conversationState[step.field] = "";
     }
 
+    const gridWrapper = document.createElement("div");
+    gridWrapper.className = "campus-card-grid-wrapper";
     const grid = document.createElement("div");
     grid.className = "campus-card-grid";
     let confirmButtonRef = null;
@@ -1299,9 +1310,12 @@ export class UIController {
         card.classList.add("disabled");
       }
 
+      const media = document.createElement("div");
+      media.className = "campus-card-media";
       const image = document.createElement("img");
       image.src = option.imageSrc;
       image.alt = `${option.label}の外観イメージ`;
+      media.appendChild(image);
 
       const content = document.createElement("div");
       content.className = "campus-card-content";
@@ -1311,6 +1325,9 @@ export class UIController {
       const market = document.createElement("p");
       market.className = "campus-meta";
       market.textContent = `商圏: ${option.marketStudents.toLocaleString()}人`;
+      const rent = document.createElement("p");
+      rent.className = "campus-meta";
+      rent.textContent = `家賃: ${this.formatMonthlyRent(option.rent)}`;
       const station = document.createElement("p");
       station.className = "campus-meta";
       station.textContent = `駅乗降客数: ${option.stationTraffic}万人/日`;
@@ -1320,16 +1337,16 @@ export class UIController {
       const capacity = document.createElement("p");
       capacity.className = "campus-meta";
       capacity.textContent = `受入上限: ${this.formatIntakeCapacity(option.intakeCapacity)}`;
-      content.append(name, market, station, capacity, cost);
+      content.append(name, market, rent, station, capacity, cost);
 
       if (!isAffordable) {
         const badge = document.createElement("span");
         badge.className = "campus-badge";
         badge.textContent = "資金不足";
-        content.appendChild(badge);
+        media.appendChild(badge);
       }
 
-      card.append(image, content);
+      card.append(media, content);
 
       card.addEventListener("click", () => {
         if (!isAffordable) {
@@ -1346,7 +1363,8 @@ export class UIController {
       grid.appendChild(card);
     });
 
-    this.refs.conversationInput.appendChild(grid);
+    gridWrapper.appendChild(grid);
+    this.refs.conversationInput.appendChild(gridWrapper);
 
     const { footer, confirmBtn } = this.buildSelectionFooter({
       stepId: step.id,
@@ -1392,6 +1410,8 @@ export class UIController {
     const start = currentPage * pageSize;
     const pageOptions = options.slice(start, start + pageSize);
 
+    const gridWrapper = document.createElement("div");
+    gridWrapper.className = "campus-card-grid-wrapper";
     const grid = document.createElement("div");
     grid.className = "campus-card-grid teacher-card-grid";
     let confirmButtonRef = null;
@@ -1465,7 +1485,8 @@ export class UIController {
       grid.appendChild(card);
     });
 
-    this.refs.conversationInput.appendChild(grid);
+    gridWrapper.appendChild(grid);
+    this.refs.conversationInput.appendChild(gridWrapper);
 
     const { footer, confirmBtn } = this.buildSelectionFooter({
       stepId: step.id,
@@ -1706,6 +1727,7 @@ export class UIController {
       label: campus.name,
       marketStudents: campus.marketStudents,
       stationTraffic: campus.stationTraffic,
+      rent: campus.rent,
       openingCost: campus.openingCost,
       intakeCapacity: campus.intakeCapacity,
       imageSrc: this.getCampusThumbnail(campus.id),
@@ -2138,6 +2160,18 @@ export class UIController {
     return `${value.toLocaleString()}人`;
   }
 
+  formatMonthlyRent(value) {
+    if (!Number.isFinite(value)) {
+      return "不明";
+    }
+    const hasDecimal = Math.abs(value - Math.round(value)) > 0.001;
+    const localeOptions = hasDecimal
+      ? { minimumFractionDigits: 1, maximumFractionDigits: 1 }
+      : undefined;
+    const formatted = localeOptions ? value.toLocaleString(undefined, localeOptions) : value.toLocaleString();
+    return `${formatted}万円/月`;
+  }
+
   getCampusThumbnail(campusId) {
     return `./assets/img/school/${campusId}.png`;
   }
@@ -2242,7 +2276,9 @@ export class UIController {
         <h3>先生不足: ${campus.name}</h3>
         <p class="muted">生徒${campus.studentCount.toLocaleString()}人に対し、先生${campus.teachers.length}人です。あと${remainingDeficit}人の先生が必要です。</p>
       </div>
-      <div class="teacher-hire-grid campus-card-grid teacher-card-grid"></div>
+      <div class="campus-card-grid-wrapper">
+        <div class="teacher-hire-grid campus-card-grid teacher-card-grid"></div>
+      </div>
       <div class="modal-actions">
         <button class="primary" data-action="hire" disabled>この先生を採用する</button>
       </div>
@@ -2494,71 +2530,73 @@ export class UIController {
     modal.className = "modal monthly-result-modal";
     modal.innerHTML = `
       <h3>その月の結果 <span>${this.formatDate(summary.year, summary.month)}</span></h3>
-      <div class="monthly-result-focus">
-        <div class="focus-card">
-          <p class="label">総生徒数</p>
-          <p class="value">${this.formatNumber(studentsAfter)}人</p>
-          <p class="delta ${deltaClass(totalStudentDelta)}">${formatDelta(totalStudentDelta, "人")}</p>
+      <div class="monthly-result-scroll">
+        <div class="monthly-result-focus">
+          <div class="focus-card">
+            <p class="label">総生徒数</p>
+            <p class="value">${this.formatNumber(studentsAfter)}人</p>
+            <p class="delta ${deltaClass(totalStudentDelta)}">${formatDelta(totalStudentDelta, "人")}</p>
+          </div>
+          <div class="focus-card">
+            <p class="label">平均満足度</p>
+            <p class="value">${avgSatisfactionAfter.toFixed(1)}</p>
+            <p class="delta ${deltaClass(avgSatisfactionDelta)}">${formatDelta(avgSatisfactionDelta, "pt", 1)}</p>
+          </div>
         </div>
-        <div class="focus-card">
-          <p class="label">平均満足度</p>
-          <p class="value">${avgSatisfactionAfter.toFixed(1)}</p>
-          <p class="delta ${deltaClass(avgSatisfactionDelta)}">${formatDelta(avgSatisfactionDelta, "pt", 1)}</p>
+        <div class="monthly-result-overview">
+          <div>
+            <p class="label">売上</p>
+            <p class="value">${this.formatYen(summary.totalRevenue)}</p>
+          </div>
+          <div>
+            <p class="label">費用</p>
+            <p class="value">${this.formatYen(summary.totalCost)}</p>
+          </div>
+          <div>
+            <p class="label">利益</p>
+            <p class="value ${summary.totalProfit >= 0 ? "value-positive" : "value-negative"}">${this.formatSignedYen(summary.totalProfit)}</p>
+          </div>
         </div>
-      </div>
-      <div class="monthly-result-overview">
-        <div>
-          <p class="label">売上</p>
-          <p class="value">${this.formatYen(summary.totalRevenue)}</p>
+        <div class="monthly-result-growth">
+          <div class="growth-card">
+            <p class="label">資金残高</p>
+            <p class="value-arrow">${this.formatMillionYen(fundsBefore)}万円 <span class="arrow">→</span> ${this.formatMillionYen(summary.fundsAfter)}万円</p>
+            <p class="delta ${summary.totalProfit >= 0 ? "value-positive" : "value-negative"}">
+              （${this.formatSignedYen(summary.totalProfit)}）
+            </p>
+          </div>
+          <div class="growth-card">
+            <p class="label">平均満足度</p>
+            <p class="value-arrow">${avgSatisfactionBefore.toFixed(1)}pt <span class="arrow">→</span> ${avgSatisfactionAfter.toFixed(1)}pt</p>
+            <p class="delta ${avgSatisfactionDelta >= 0 ? "value-positive" : "value-negative"}">
+              （${formatDelta(avgSatisfactionDelta, "pt", 1)}）
+            </p>
+          </div>
         </div>
-        <div>
-          <p class="label">費用</p>
-          <p class="value">${this.formatYen(summary.totalCost)}</p>
+        <div class="monthly-result-breakdown">
+          <div class="breakdown-card">
+            <h4>売上</h4>
+            <ul class="breakdown-list">
+              <li><span>授業料</span><strong>${this.formatYen(summary.totalRevenue)}</strong></li>
+            </ul>
+          </div>
+          <div class="breakdown-card">
+            <h4>費用</h4>
+            <ul class="breakdown-list">
+              <li><span>家賃</span><strong>${this.formatYen(breakdown.rentCost)}</strong></li>
+              <li><span>給与</span><strong>${this.formatYen(breakdown.salaryCost)}</strong></li>
+              <li><span>広告</span><strong>${this.formatYen(breakdown.adCost)}</strong></li>
+              <li><span>ロイヤリティ</span><strong>${this.formatYen(breakdown.royaltyCost)}</strong></li>
+              <li><span>諸経費</span><strong>${this.formatYen(breakdown.miscCost ?? 0)}</strong></li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <p class="label">利益</p>
-          <p class="value ${summary.totalProfit >= 0 ? "value-positive" : "value-negative"}">${this.formatSignedYen(summary.totalProfit)}</p>
-        </div>
-      </div>
-      <div class="monthly-result-growth">
-        <div class="growth-card">
-          <p class="label">資金残高</p>
-          <p class="value-arrow">${this.formatMillionYen(fundsBefore)}万円 <span class="arrow">→</span> ${this.formatMillionYen(summary.fundsAfter)}万円</p>
-          <p class="delta ${summary.totalProfit >= 0 ? "value-positive" : "value-negative"}">
-            （${this.formatSignedYen(summary.totalProfit)}）
-          </p>
-        </div>
-        <div class="growth-card">
-          <p class="label">平均満足度</p>
-          <p class="value-arrow">${avgSatisfactionBefore.toFixed(1)}pt <span class="arrow">→</span> ${avgSatisfactionAfter.toFixed(1)}pt</p>
-          <p class="delta ${avgSatisfactionDelta >= 0 ? "value-positive" : "value-negative"}">
-            （${formatDelta(avgSatisfactionDelta, "pt", 1)}）
-          </p>
-        </div>
-      </div>
-      <div class="monthly-result-breakdown">
-        <div class="breakdown-card">
-          <h4>売上</h4>
-          <ul class="breakdown-list">
-            <li><span>授業料</span><strong>${this.formatYen(summary.totalRevenue)}</strong></li>
+        <div class="monthly-result-campus">
+          <h4>校舎別サマリー</h4>
+          <ul>
+            ${campusList || "<li class=\"muted\">校舎データがありません。</li>"}
           </ul>
         </div>
-        <div class="breakdown-card">
-          <h4>費用</h4>
-          <ul class="breakdown-list">
-            <li><span>家賃</span><strong>${this.formatYen(breakdown.rentCost)}</strong></li>
-            <li><span>給与</span><strong>${this.formatYen(breakdown.salaryCost)}</strong></li>
-            <li><span>広告</span><strong>${this.formatYen(breakdown.adCost)}</strong></li>
-            <li><span>ロイヤリティ</span><strong>${this.formatYen(breakdown.royaltyCost)}</strong></li>
-            <li><span>諸経費</span><strong>${this.formatYen(breakdown.miscCost ?? 0)}</strong></li>
-          </ul>
-        </div>
-      </div>
-      <div class="monthly-result-campus">
-        <h4>校舎別サマリー</h4>
-        <ul>
-          ${campusList || "<li class=\"muted\">校舎データがありません。</li>"}
-        </ul>
       </div>
       <div class="monthly-result-footer">
         <p>資金残高: <strong>${this.formatMillionYen(summary.fundsAfter)}万円</strong></p>
@@ -2594,6 +2632,7 @@ export class UIController {
       : "このデータはすでに全60ヶ月の経営を完了しています。";
     const monthsPlayed = player.elapsedMonths ?? 0;
     const fundsLabel = `${this.formatMillionYen(player.funds)}万円`;
+    const shareIntentUrl = this.buildCampaignShareUrl(player, snapshot);
     const bestCampus = this.getTopCampusByStudents(campuses);
     const campusRanking = campuses
       .slice()
@@ -2626,45 +2665,48 @@ export class UIController {
     modal.className = "modal campaign-complete-modal";
     modal.innerHTML = `
       <h3>最終結果</h3>
-      <p class="muted">${completionLine} 目標だった「総生徒数の最大化」に向けた最終スコアを確認しましょう。</p>
-      <div class="final-highlight">
-        <div class="final-card">
-          <p class="label">総獲得生徒数</p>
-          <p class="value">${totalStudentsLabel}</p>
-          <p class="sub">${monthsPlayed}ヶ月間の累計</p>
+      <div class="campaign-complete-scroll">
+        <p class="muted">${completionLine} 目標だった「総生徒数の最大化」に向けた最終スコアを確認しましょう。</p>
+        <div class="final-highlight">
+          <div class="final-card">
+            <p class="label">総獲得生徒数</p>
+            <p class="value">${totalStudentsLabel}</p>
+            <p class="sub">${monthsPlayed}ヶ月間の累計</p>
+          </div>
+          <div class="final-card">
+            <p class="label">平均満足度</p>
+            <p class="value">${avgSatisfactionLabel}</p>
+            <p class="sub">全校舎平均</p>
+          </div>
+          <div class="final-card">
+            <p class="label">最終資金</p>
+            <p class="value">${fundsLabel}</p>
+            <p class="sub">運転資金残高</p>
+          </div>
         </div>
-        <div class="final-card">
-          <p class="label">平均満足度</p>
-          <p class="value">${avgSatisfactionLabel}</p>
-          <p class="sub">全校舎平均</p>
+        ${(() => {
+          if (!bestCampus) {
+            return "";
+          }
+          const bestCount =
+            typeof bestCampus.studentCount === "number"
+              ? bestCampus.studentCount.toLocaleString()
+              : "0";
+          const satisfactionLabel =
+            typeof bestCampus.satisfaction === "number"
+              ? `${bestCampus.satisfaction.toFixed(1)}pt`
+              : "データ不明";
+          return `<p class="best-campus">最多生徒は<strong>${bestCampus.name}</strong>で${bestCount}人（満足度 ${satisfactionLabel}）。ブランド牽引役となりました。</p>`;
+        })()}
+        <div class="monthly-result-campus final">
+          <h4>校舎別の最終状況</h4>
+          <ul class="final-campus-list">
+            ${campusRanking || '<li class="muted">校舎データがありません。</li>'}
+          </ul>
         </div>
-        <div class="final-card">
-          <p class="label">最終資金</p>
-          <p class="value">${fundsLabel}</p>
-          <p class="sub">運転資金残高</p>
-        </div>
-      </div>
-      ${(() => {
-        if (!bestCampus) {
-          return "";
-        }
-        const bestCount =
-          typeof bestCampus.studentCount === "number"
-            ? bestCampus.studentCount.toLocaleString()
-            : "0";
-        const satisfactionLabel =
-          typeof bestCampus.satisfaction === "number"
-            ? `${bestCampus.satisfaction.toFixed(1)}pt`
-            : "データ不明";
-        return `<p class="best-campus">最多生徒は<strong>${bestCampus.name}</strong>で${bestCount}人（満足度 ${satisfactionLabel}）。ブランド牽引役となりました。</p>`;
-      })()}
-      <div class="monthly-result-campus final">
-        <h4>校舎別の最終状況</h4>
-        <ul class="final-campus-list">
-          ${campusRanking || '<li class="muted">校舎データがありません。</li>'}
-        </ul>
       </div>
       <div class="modal-actions">
+        <button class="button-share" data-action="share-result">Xでシェア</button>
         <button class="secondary" data-action="return-title">タイトルに戻る</button>
         <button class="primary" data-dismiss="true">閉じる</button>
       </div>
@@ -2673,6 +2715,10 @@ export class UIController {
     modal.addEventListener("click", (event) => {
       const button = event.target.closest("button");
       if (!button) {
+        return;
+      }
+      if (button.dataset.action === "share-result") {
+        this.openShareIntent(shareIntentUrl);
         return;
       }
       if (button.dataset.action === "return-title") {
@@ -2810,5 +2856,42 @@ export class UIController {
         typeof best.studentCount === "number" ? best.studentCount : Number.NEGATIVE_INFINITY;
       return currentStudents > bestStudents ? campus : best;
     }, null);
+  }
+
+  buildCampaignShareUrl(player, snapshot) {
+    if (!player) {
+      return "";
+    }
+    const schoolName = player.schoolName || "名称未設定の塾";
+    const totalStudents = this.formatNumber(snapshot?.totalStudents ?? 0);
+    const funds = this.formatMillionYen(player.funds ?? 0);
+    const avg = snapshot?.campusCount ? snapshot.avgSatisfaction.toFixed(1) : "0.0";
+    const shareUrl =
+      typeof window !== "undefined" && window.location
+        ? window.location.origin || window.location.href
+        : "";
+    const text = [
+      "経営シミュレーションゲーム「塾のフランチャイズオーナーになろう！」",
+      shareUrl || "http://127.0.0.1:5500",
+      "",
+      `『${schoolName}』で全60ヶ月の運営完了！`,
+      `最終資金${funds}万円 / 総生徒${totalStudents}人 / 平均満足度${avg}pt`,
+      "",
+      "#塾フランチャイズオーナーになろう！",
+    ].join("\n");
+    const params = new URLSearchParams();
+    params.set("text", text);
+    return `https://x.com/intent/post?${params.toString()}`;
+  }
+
+  openShareIntent(url) {
+    if (!url) {
+      this.showSystemMessage("共有リンクの生成に失敗しました。");
+      return;
+    }
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+    if (!opened) {
+      this.showSystemMessage("ブラウザの設定によりポップアップがブロックされました。", "info");
+    }
   }
 }

@@ -12,7 +12,7 @@
   {
     "id": "chiba",
     "name": "千葉校",
-    "marketStudents": 3000,
+    "marketStudents": 3500,
     "rent": 35.5,
     "stationTraffic": 10,
     "tuitionPerStudent": 27000,
@@ -40,6 +40,16 @@
     "intakeCapacity": 540
   },
   {
+    "id": "nakano",
+    "name": "中野校",
+    "marketStudents": 7000,
+    "rent": 48.0,
+    "stationTraffic": 24,
+    "tuitionPerStudent": 30800,
+    "openingCost": 6300000,
+    "intakeCapacity": 600
+  },
+  {
     "id": "akihabara",
     "name": "秋葉原校",
     "marketStudents": 8000,
@@ -57,6 +67,16 @@
     "stationTraffic": 67,
     "tuitionPerStudent": 33000,
     "openingCost": 12000000,
-    "intakeCapacity": 900
+    "intakeCapacity": 840
+  },
+  {
+    "id": "tokyo",
+    "name": "東京校",
+    "marketStudents": 12000,
+    "rent": 105.0,
+    "stationTraffic": 43,
+    "tuitionPerStudent": 35000,
+    "openingCost": 16000000,
+    "intakeCapacity": 960
   }
 ]
