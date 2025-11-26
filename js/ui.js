@@ -565,24 +565,26 @@ export class UIController {
         <h3>新規開校</h3>
         <p class="muted">所持資金: ${this.formatYen(currentFunds)} ／ 家賃水準に応じて400万〜800万円の初期投資が必要です。</p>
       </div>
-      <div class="open-campus-step" data-step="campus">
-        <div class="open-campus-step-head">
-          <h4>1. 校舎を選択</h4>
-          <span>未開校の校舎カードから選択してください。</span>
+      <div class="open-campus-scroll">
+        <div class="open-campus-step" data-step="campus">
+          <div class="open-campus-step-head">
+            <h4>1. 校舎を選択</h4>
+            <span>未開校の校舎カードから選択してください。</span>
+          </div>
+          <div class="campus-card-grid-wrapper">
+            <div class="campus-card-grid" data-role="open-campus-grid"></div>
+          </div>
         </div>
-        <div class="campus-card-grid-wrapper">
-          <div class="campus-card-grid" data-role="open-campus-grid"></div>
+        <div class="open-campus-step" data-step="teacher">
+          <div class="open-campus-step-head">
+            <h4>2. 初期の先生を決定</h4>
+            <span>開校時に着任する先生を選びましょう。</span>
+          </div>
+          <div class="campus-card-grid-wrapper">
+            <div class="campus-card-grid teacher-card-grid" data-role="open-teacher-grid"></div>
+          </div>
+          <p class="muted helper">※ 校舎を選ぶと選択できるようになります。</p>
         </div>
-      </div>
-      <div class="open-campus-step" data-step="teacher">
-        <div class="open-campus-step-head">
-          <h4>2. 初期の先生を決定</h4>
-          <span>開校時に着任する先生を選びましょう。</span>
-        </div>
-        <div class="campus-card-grid-wrapper">
-          <div class="campus-card-grid teacher-card-grid" data-role="open-teacher-grid"></div>
-        </div>
-        <p class="muted helper">※ 校舎を選ぶと選択できるようになります。</p>
       </div>
       <div class="modal-actions spaced">
         <button class="secondary" data-dismiss="true">閉じる</button>
@@ -645,6 +647,7 @@ export class UIController {
             return;
           }
           selection.campusId = option.value;
+          selection.teacherId = "";
           renderCampusCards();
           renderTeacherCards();
           updateTeacherStepState();
@@ -814,12 +817,16 @@ export class UIController {
       })
       .join("");
     modal.innerHTML = `
-      <h3>広告プランを選択</h3>
-      <p>選択した広告は次の月から費用と効果が反映されます。</p>
-      <div class="ad-plan-grid">
-        ${planCards}
+      <div class="modal-head">
+        <h3>広告プランを選択</h3>
+        <p>選択した広告は次の月から費用と効果が反映されます。</p>
       </div>
-      <p class="ad-plan-note">※プラン変更は決定した翌月から自動で反映されます。</p>
+      <div class="ad-plan-scroll">
+        <div class="ad-plan-grid">
+          ${planCards}
+        </div>
+        <p class="ad-plan-note">※プラン変更は決定した翌月から自動で反映されます。</p>
+      </div>
       <div class="modal-actions">
         <button class="secondary" data-dismiss="true">閉じる</button>
       </div>
